@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Product>
+<div class="right_col" role="main" style="padding:0">
+    <div class="">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Ürün <small>Yönetimi</small></h2>
+                    <a asp-area="admin" asp-controller="Product" asp-action="New" class="btn btn-success" style="float:right;color:#fff">Yeni Ürün</a>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">Adı</th>
+                                    <th class="column-title">Fiyatı</th>
+                                    <th class="column-title">Markası</th>
+                                    <th class="column-title">Kategorisi</th>
+                                    <th class="column-title">Stok</th>
+                                    <th class="column-title">Sıra</th>
+                                    <th class="column-title">Resimler</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model.Any())
+                                {
+                                    @foreach (Product p in Model)
+                                    {
+                                        <tr class="even pointer">
+                                            <td class="a-right a-right">
+                                                <a asp-area="admin" asp-controller="Product" asp-action="Edit" asp-route-id="@p.ID">@p.Name</a>
+                                            </td>
+                                            <td>@p.Price TL</td>
+                                            @if (p.Brand != null)
+                                            {
+                                                <td>@p.Brand.Name</td>
+                                            }
+                                            else
+                                            {
+                                                <td>Marka Bulunamadı...</td>
+                                            }
+                                            <td>
+                                                @string.Join(',', p.ProductCategories.Select(s=>s.Category.Name))
+                                            </td>
+                                            <td>@p.Stock</td>
+                                            <td>@p.DisplayIndex</td>
+                                            <td><a asp-area="admin" asp-controller="ProductPicture" asp-action="Index" asp-route-productid="@p.ID">Resimler</a></td>
+                                            <td>
+                                                <a class="btn btn-danger productDelete" style="float:right;color:#fff" rowID="@p.ID">Sil</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modelDelete" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">DİKKAT!...</h5>
+            </div>
+            <div class="modal-body">
+                <p>Seçili Ürün Kaydını Silmek İstediğinizden Emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="$(this).closest('.modal').modal('hide')">Hayır</button>
+                <button type="button" class="btn btn-primary" onclick="deleteProduct(silinecekID)">Evet</button>
+            </div>
+        </div>
+    </div>
+</div>

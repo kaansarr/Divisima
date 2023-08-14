@@ -1,0 +1,108 @@
+﻿@model ProductVM
+<div class="page-top-info">
+    <div class="container">
+        <h4>Ürün Detayı</h4>
+        <div class="site-pagination">
+            <a href="">Ana Sayfa</a> / <a asp-controller="product" asp-action="Detail" asp-route-name="@GeneralTool.URLConvert(Model.Product.Name)" asp-route-id="@Model.Product.ID">@Model.Product.Name</a>
+        </div>
+    </div>
+</div>
+<!-- Page info end -->
+<!-- product section -->
+<section class="product-section">
+    <div class="container">
+        <div class="back-link">
+            <a href="./category.html"> &lt;&lt; Back to Category</a>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                @if (Model.Product.ProductPictures.Any())
+                {
+                    <div class="product-pic-zoom">
+                        <img class="product-big-img" src="@Model.Product.ProductPictures.FirstOrDefault().Picture" alt="@Model.Product.Name">
+                    </div>
+                    <div class="product-thumbs" tabindex="1" style="overflow: hidden; outline: none;">
+                        <div class="product-thumbs-track">
+                            @foreach (ProductPicture pp in Model.Product.ProductPictures)
+                            {
+                                <div class="pt active" data-imgbigurl="@pp.Picture"><img src="@pp.Picture" alt="@pp.Name"></div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-6 product-details">
+                <h2 class="p-title">@Model.Product.Name</h2>
+                <h3 class="p-price">@Model.Product.Price TL</h3>
+                <h4 class="p-stock">
+                    Stok Durumu:
+                    @if (Model.Product.Stock > 0)
+                    {
+                        <span style="color:green">Stokta Var</span>
+                    }
+                    else
+                    {
+                        <span style="color:red">Tükendi</span>
+                    }
+                </h4>
+                <div class="quantity">
+                    <p>Quantity</p>
+                    <div class="pro-qty"><input class="inputQuantity" type="text" value="1"></div>
+                </div>
+                @if (Model.Product.Stock > 0)
+                {
+                    <button class="site-btn" onclick="addCart(@Model.Product.ID,@Model.Product.Stock)">SEPETE EKLE</button>
+                }
+                else
+                {
+                    <a href="#" class="site-btn" style="pointer-events:none;background-color:gray">TÜKENDİ</a>
+                }
+                <div id="accordion" class="accordion-area">
+                    <div class="panel">
+                        <div class="panel-header" id="headingOne">
+                            <button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">Açıklama</button>
+                        </div>
+                        <div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="panel-body">
+                                <p>@Model.Product.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header" id="headingTwo">
+                            <button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Detaylı Bilgi</button>
+                        </div>
+                        <div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="panel-body">
+                                <p>@Html.Raw(Model.Product.Detail)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-sharing">
+                    <a href=""><i class="fa fa-google-plus"></i></a>
+                    <a href=""><i class="fa fa-pinterest"></i></a>
+                    <a href=""><i class="fa fa-facebook"></i></a>
+                    <a href=""><i class="fa fa-twitter"></i></a>
+                    <a href=""><i class="fa fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product section end -->
+<!-- RELATED PRODUCTS section -->
+<section class="related-product-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>BENZER ÜRÜNLER</h2>
+        </div>
+        <div class="product-slider owl-carousel">
+            @foreach (Product product in Model.RelatedProducts)
+            {
+                <partial name="_product" model="@product" />
+            }
+        </div>
+    </div>
+</section>
+<!-- RELATED PRODUCTS section end -->

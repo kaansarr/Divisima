@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ProductPicture>
+<div class="right_col" role="main" style="padding:0">
+    <div class="">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Ürün Resimleri <small>Yönetimi</small></h2>
+                    <a asp-area="admin" asp-controller="ProductPicture" asp-action="New" asp-route-productid="@ViewBag.ProductID" class="btn btn-success" style="float:right;color:#fff">Yeni Ürün Resimleri</a>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">Adı</th>
+                                    <th class="column-title">Resmi</th>
+                                    <th class="column-title">Sırası</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (ProductPicture s in Model)
+                                {
+                                    <tr class="even pointer">
+                                        <td class="a-right a-right">
+                                            <a asp-area="admin" asp-controller="ProductPicture" asp-action="Edit" asp-route-id="@s.ID">@s.Name</a>
+                                        </td>
+                                        <td class="a-right a-right">
+                                            @if (!string.IsNullOrEmpty(s.Picture))
+                                            {
+                                                <img src="@s.Picture" width="150"/>
+                                            }
+                                            else
+                                            {
+                                                <img src="/img/hazirlaniyor.webp" width="150"/>
+                                            }
+                                        </td>
+                                        <td class="a-right a-right">@s.DisplayIndex</td>
+                                        <td>
+                                            <a class="btn btn-danger productPictureDelete" style="float:right;color:#fff" rowID="@s.ID" productID="@s.ProductID">Sil</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modelDelete" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">DİKKAT!...</h5>
+            </div>
+            <div class="modal-body">
+                <p>Seçili Ürün Resimleri Kaydını Silmek İstediğinizden Emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="$(this).closest('.modal').modal('hide')">Hayır</button>
+                <button type="button" class="btn btn-primary" onclick="deleteProductPicture(silinecekID)">Evet</button>
+            </div>
+        </div>
+    </div>
+</div>

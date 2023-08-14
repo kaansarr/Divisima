@@ -1,0 +1,82 @@
+﻿@model OrderVM
+<div class="page-top-info">
+    <div class="container">
+        <h4>Alışveriş Sepetim</h4>
+        <div class="site-pagination">
+            <a href="/">Ana Sayfa</a> /
+            <a href="/sepetim">Sepetim</a>
+        </div>
+    </div>
+</div>
+<!-- Page info end -->
+<!-- checkout section  -->
+<section class="checkout-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 order-2 order-lg-1">
+                <form class="checkout-form" asp-controller="Cart" asp-action="Complete" method="post">
+                    <div class="cf-title">ADRES TANIMI</div>
+                    @*<div asp-validation-summary="All"></div>*@
+                    <div class="row address-inputs">
+                        <div class="col-md-6">
+                            <input asp-for="Order.Name" placeholder="Adı">
+                            <span asp-validation-for="Order.Name"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Order.Surname" placeholder="Soyadı">
+                            <span asp-validation-for="Order.Surname"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <input asp-for="Order.Address" placeholder="Adresi">
+                            <span asp-validation-for="Order.Address"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <select asp-for="Order.CityID" asp-items="Model.Cities.Select(x=>new SelectListItem {Text=x.Name,Value=x.ID.ToString() })">
+                                <option value="">Şehir Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="Order.CityID"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Order.ZipCode" placeholder="Posta Kodu">
+                            <span asp-validation-for="Order.ZipCode"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Order.Phone" placeholder="Telefonu">
+                            <span asp-validation-for="Order.Phone"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="Order.Mail" placeholder="Mail Adresi">
+                            <span asp-validation-for="Order.Mail"></span>
+                        </div>
+                    </div>
+                    <div class="cf-title">Ödeme Türü</div>
+                    <div class="col-md-12">
+                        <select asp-for="Order.PaymentOption" asp-items="Html.GetEnumSelectList<EPaymentOption>()">
+                        </select>
+                        <span asp-validation-for="Order.PaymentOption"></span>
+                    </div>
+                    <button class="site-btn submit-order-btn">Siparişi Tamamla</button>
+                </form>
+            </div>
+            <div class="col-lg-4 order-1 order-lg-2">
+                <div class="checkout-cart">
+                    <h3>Alışveriş Sepetim</h3>
+                    <ul class="product-list">
+                        @foreach (var cart in Model.Carts)
+                        {
+                            <li>
+                                <div class="pl-thumb"><img src="@cart.Picture" alt="@cart.Name"></div>
+                                <h6>@cart.Name</h6>
+                                <p>@cart.Price TL</p>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="price-list">
+                        <li class="total">Toplam Tutar<span style="width:initial">@Model.Carts.Sum(x=>x.Price*x.Quantity) TL</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- checkout section end -->
